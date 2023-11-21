@@ -1,6 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AmqpConnection, RabbitRPC } from '@golevelup/nestjs-rabbitmq';
+import { ImageDto } from './image.dto';
 
 @Controller()
 export class AppController {
@@ -9,16 +10,16 @@ export class AppController {
     private readonly amqpConnection: AmqpConnection
     ){}
     
+    private readonly filePath:string = './test.png';
+
     @Get()
     async rmqTest() {
-      setInterval(() => {
-        this.amqpConnection.publish<CustomModel>('image', 'image-key', {foo: 'test', bar: 'test'});
-      }, 500);
-      
+      const fs = require('fs');
+
+      let imageFile = fs.readFileSync(this.filePath);
+      let encode = Buffer.from(imageFile).toString('base64');
+
+      this.amqpConnection.publish<ImageDto>('image', 'image-key', {image: encode});
     }
 }
 
-interface CustomModel {
-  foo: string;
-  bar: string;
-}

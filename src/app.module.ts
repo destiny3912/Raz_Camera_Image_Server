@@ -12,7 +12,7 @@ import { MessagingService } from './messaging.service';
           type: 'topic'
         },
       ],
-      uri: 'amqp://guest:guest@localhost:5672',
+      uri: 'amqp://guest:guest@www.rookiedev.info:5672',
       channels: {
         'channel-1': {
           prefetchCount: 15,
