@@ -10,7 +10,7 @@ export class AppController {
     private readonly amqpConnection: AmqpConnection
     ){}
     
-    private readonly filePath:string = './test.png';
+    private readonly filePath:string = '/home/image/image.png';
 
     @Get()
     async rmqTest() {
@@ -18,8 +18,12 @@ export class AppController {
 
       let imageFile = fs.readFileSync(this.filePath);
       let encode = Buffer.from(imageFile).toString('base64');
-
+      
       this.amqpConnection.publish<ImageDto>('image', 'image-key', {image: encode});
+
+      fs.rm(this.filePath, (err) => {
+        console.log(err);
+      })
     }
 }
 
