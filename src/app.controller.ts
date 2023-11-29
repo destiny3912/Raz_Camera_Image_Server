@@ -10,7 +10,7 @@ export class AppController {
     private readonly amqpConnection: AmqpConnection
     ){}
     
-    private readonly filePath:string = '/home/image/image.png';
+    private readonly filePath:string = './image.png';
 
     @Get()
     async rmqTest() {
@@ -24,6 +24,8 @@ export class AppController {
       fs.rm(this.filePath, (err) => {
         console.log(err);
       })
+
+      return 'success';
     }
 }
 
